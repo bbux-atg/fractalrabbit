@@ -11,22 +11,22 @@ import java.util.Random;
  */
 public class PoissonVariate {
 
-	private final double lambda;
-	private final Random g;
+    private final double lambda;
+    private final Random g;
 
-	public PoissonVariate(double lam) {
-		this.lambda = lam;
-		this.g= new Random();
-	}
-	
-	public int generate() {
-		int count = 0;
-		double sum = 0.0;
-		while(sum < this.lambda) {
-			sum-=Math.log(g.nextDouble());
-			count++;
-		}
-		return count;
-	}
+    public PoissonVariate(double lam) {
+        this.lambda = lam;
+        this.g = new Random();
+    }
+
+    public int generate() {
+        int count = 0;
+        double sum = 0.0;
+        while (sum < this.lambda) {
+            sum -= Math.log(g.nextDouble());
+            count++;
+        }
+        return count;
+    }
 
 }

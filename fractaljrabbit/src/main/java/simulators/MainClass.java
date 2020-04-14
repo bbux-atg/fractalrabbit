@@ -19,7 +19,6 @@ package simulators;
  * April 3, 2019: modified to read in 7 principal parameters via parameters.csv input file
  */
 
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -38,8 +37,7 @@ import java.util.*;
  * @author RWRD
  *
  */
-public class MainClass
-{
+public class MainClass {
     /*
      * Three tiers of the FRACTALRABBIT simulator
      */
@@ -153,8 +151,7 @@ public class MainClass
             for (int t = 0; t < numTrajectories; t++) {
                 // new trajectory with Poisson phi, Poisson # of steps, uniform random start
                 // point
-                frg.trajectoryList
-                        .add(frg.rpp.trajectory(phiRandom.generate(), stepsRandom.generate(), g.nextInt(n)));
+                frg.trajectoryList.add(frg.rpp.trajectory(phiRandom.generate(), stepsRandom.generate(), g.nextInt(n)));
             }
 
             /*
@@ -164,8 +161,7 @@ public class MainClass
             double alpha = -1.5; // Sporadic Reporter - Pareto tail
             PoissonVariate countRandom = new PoissonVariate(countMean);
 
-            System.out.println(
-                    numTrajectories + " trajectories generated, in which travelers assigned to same trajectory are: ");
+            System.out.println(numTrajectories + " trajectories generated, in which travelers assigned to same trajectory are: ");
             for (Integer p : frg.coTravellers) {
                 System.out.print(p + ", ");
             }
@@ -181,8 +177,7 @@ public class MainClass
             for (Integer p : frg.trajectoryAssignment.keySet()) {
                 currentTrajectory = frg.trajectoryAssignment.get(p); // trajectory # for traveler p
                 frg.spore.embedTrajectory(frg.trajectoryList.get(currentTrajectory)); // embed in continuous time
-                frg.spore.generateReports(frg.trajectoryList.get(currentTrajectory), countRandom.generate(), delta,
-                        alpha, days); // generate sporadic reports for this trajectory
+                frg.spore.generateReports(frg.trajectoryList.get(currentTrajectory), countRandom.generate(), delta, alpha, days); // generate sporadic reports for this trajectory
                 frg.reportTimesAssignment.put(p, List.copyOf(frg.spore.getReportTimes())); // tag p with Report Times
                 frg.reportPlacesAssignment.put(p, List.copyOf(frg.spore.getReportPlaces())); // tag p with Report Places
             }
@@ -191,9 +186,14 @@ public class MainClass
              * FAILED!
              */
             for (Integer p : frg.reportTimesAssignment.keySet()) {
-                System.out.println(
-                        "First report for traveler " + p + " at time " + frg.reportTimesAssignment.get(p).get(0)
-                                + " is place " + frg.reportPlacesAssignment.get(p).get(0));
+                System.out
+                    .println(
+                        "First report for traveler "
+                            + p
+                            + " at time "
+                            + frg.reportTimesAssignment.get(p).get(0)
+                            + " is place "
+                            + frg.reportPlacesAssignment.get(p).get(0));
             }
             System.out.println("Reports have been generated for " + numTravelers + " travelers.");
             /*
@@ -201,8 +201,7 @@ public class MainClass
              * to csv using Apache Commons CSV
              */
             try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputFile + ".csv"));
-                 CSVPrinter csvPrinter = new CSVPrinter(writer,
-                         CSVFormat.DEFAULT.withHeader("ID", "Days", "x(km)", "y(km)"))) {
+                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("ID", "Days", "x(km)", "y(km)"))) {
                 double x, y, time;
                 int place;
                 int lines = 0;
@@ -213,9 +212,14 @@ public class MainClass
                         time = frg.reportTimesAssignment.get(p).get(t);
                         place = frg.reportPlacesAssignment.get(p).get(t);
                         if (t == 0) {
-                            System.out.println("First report for traveler " + p + " is point "
-                                    + frg.reportPlacesAssignment.get(p).get(t) + " at time "
-                                    + frg.reportTimesAssignment.get(p).get(t));
+                            System.out
+                                .println(
+                                    "First report for traveler "
+                                        + p
+                                        + " is point "
+                                        + frg.reportPlacesAssignment.get(p).get(t)
+                                        + " at time "
+                                        + frg.reportTimesAssignment.get(p).get(t));
                         }
                         x = kilometersPerUnit * frg.app.getPoints().get(place)[0];
                         y = kilometersPerUnit * frg.app.getPoints().get(place)[1];
@@ -234,20 +238,17 @@ public class MainClass
              * Commons CSV
              */
             try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputFile + "PLACES.csv"));
-                 CSVPrinter csvPrinter = new CSVPrinter(writer,
-                         CSVFormat.DEFAULT.withHeader("Traveler ID", "Days", "Place ID"))) {
+                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Traveler ID", "Days", "Place ID"))) {
                 int lines = 0;
                 // Write to file ERROR - repetitions of one report set!
 
                 for (Integer p : frg.reportTimesAssignment.keySet()) {
                     for (int t = 0; t < frg.reportTimesAssignment.get(p).size(); t++) {
-                        csvPrinter.printRecord(p, frg.reportTimesAssignment.get(p).get(t),
-                                frg.reportPlacesAssignment.get(p).get(t));
+                        csvPrinter.printRecord(p, frg.reportTimesAssignment.get(p).get(t), frg.reportPlacesAssignment.get(p).get(t));
                         lines++;
                     }
                 }
-                System.out
-                        .println("CSV Places file created with " + lines + " lines, called " + csvOutputFile + "PLACES.csv");
+                System.out.println("CSV Places file created with " + lines + " lines, called " + csvOutputFile + "PLACES.csv");
                 csvPrinter.flush();
                 writer.flush();
             }
@@ -260,4 +261,3 @@ public class MainClass
     }
 
 }
-

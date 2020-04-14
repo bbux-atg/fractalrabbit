@@ -68,8 +68,7 @@ public class Retropreferential {
      */
     public void insertRate(int k) {
         double[] vector = new double[this.numPlaces];
-        IntToDoubleFunction proximity = (j -> (j == k) ? 0.0
-                : Math.pow(this.points[k].distanceTo(this.points[j]), this.exponent));
+        IntToDoubleFunction proximity = (j -> (j == k) ? 0.0 : Math.pow(this.points[k].distanceTo(this.points[j]), this.exponent));
         Arrays.setAll(vector, proximity);
         this.rate.put(k, vector);
     }
@@ -121,7 +120,7 @@ public class Retropreferential {
             // System.out.println("Is a rate vector available? " +
             // this.rate.keySet().contains(state));
             state = explore ? this.explorer.sample(this.rate.get(state), this.isVisited)
-                    : this.revisitor.sample(this.placesVisited, this.rate.get(state), this.visitTally);
+                : this.revisitor.sample(this.placesVisited, this.rate.get(state), this.visitTally);
             x.add(state); // extend trajectory
             this.visitTally[state]++; // clock up another visit to this state
             if (!this.rate.containsKey(state)) {
@@ -155,7 +154,5 @@ public class Retropreferential {
     public boolean[] getIsVisited() {
         return isVisited;
     }
-
-
 
 }

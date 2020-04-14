@@ -18,33 +18,32 @@ import java.util.List;
  */
 public class IrregularBinAssignment {
 
-	private final List<Integer> placements;
+    private final List<Integer> placements;
 
-	public IrregularBinAssignment() {
-		this.placements = new ArrayList<>();
-	}
+    public IrregularBinAssignment() {
+        this.placements = new ArrayList<>();
+    }
 
-	public void assign(List<? extends Comparable> bins, List<? extends Comparable> obs) {
-		this.placements.clear();
+    public void assign(List<? extends Comparable> bins, List<? extends Comparable> obs) {
+        this.placements.clear();
 
-		int k = 1; // bin counter
-		Comparable a = bins.get(k); // top of first bin
-		for (Comparable b : obs) {
-			while (!(b.compareTo(a) < 0)) {
-				k++; // possibly some bins may have no observations
-				a = bins.get(k);
-			}
-			this.placements.add(k - 1);
-		}
+        int k = 1; // bin counter
+        Comparable a = bins.get(k); // top of first bin
+        for (Comparable b : obs) {
+            while (!(b.compareTo(a) < 0)) {
+                k++; // possibly some bins may have no observations
+                a = bins.get(k);
+            }
+            this.placements.add(k - 1);
+        }
 
-	}
+    }
 
-	/**
-	 * @return the placements
-	 */
-	public List<Integer> getPlacements() {
-		return placements;
-	}
-	
+    /**
+     * @return the placements
+     */
+    public List<Integer> getPlacements() {
+        return placements;
+    }
 
 }

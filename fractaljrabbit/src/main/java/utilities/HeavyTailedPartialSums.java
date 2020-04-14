@@ -20,37 +20,39 @@ import java.util.stream.Collectors;
  *
  */
 public class HeavyTailedPartialSums {
-	private final Random g;
-	/**
-	 * 
-	 */
-	public HeavyTailedPartialSums() {
-		g = new Random();
-	}
-	/*
-	 * @param count = dimension of vector to be returned
-	 * 
-	 * @param delta > 0.0 meaning the least time between distinct events
-	 * 
-	 * Maximum time between distinct events can be taken as 1.0
-	 * 
-	 * @param alphaDaily < -1.0
-	 * 
-	 * t^alphaDaily is tail probability, up to cut-off
-	 */
-	public List<Double> generate(int count, double delta,  double alpha) {
-		/*
-		 * Set upper bound for uniform sampling
-		 */
-		double u1 = Math.pow(delta, 1.0 / alpha); // u1 > 1 since alphaDaily < 0
-		// Simulate truncated Pareto random variables
-		double[] y = g.doubles(count + 1).boxed().mapToDouble(x->Math.pow(1.0 + (u1 - 1.0) * x, alpha) ).toArray();
-		// Partial sums
-		DoubleBinaryOperator partialSum = Double::sum;
-		Arrays.parallelPrefix(y, partialSum); 
-		double sum = y[count]; // this index exists!
-		// drop last value which must be 1.0
-		return Arrays.stream(y).limit(count).boxed().map(z->z/sum).collect(Collectors.toList());		
-	}
+    private final Random g;
+
+    /**
+     * 
+     */
+    public HeavyTailedPartialSums() {
+        g = new Random();
+    }
+
+    /*
+     * @param count = dimension of vector to be returned
+     * 
+     * @param delta > 0.0 meaning the least time between distinct events
+     * 
+     * Maximum time between distinct events can be taken as 1.0
+     * 
+     * @param alphaDaily < -1.0
+     * 
+     * t^alphaDaily is tail probability, up to cut-off
+     */
+    public List<Double> generate(int count, double delta, double alpha) {
+        /*
+         * Set upper bound for uniform sampling
+         */
+        double u1 = Math.pow(delta, 1.0 / alpha); // u1 > 1 since alphaDaily < 0
+        // Simulate truncated Pareto random variables
+        double[] y = g.doubles(count + 1).boxed().mapToDouble(x -> Math.pow(1.0 + (u1 - 1.0) * x, alpha)).toArray();
+        // Partial sums
+        DoubleBinaryOperator partialSum = Double::sum;
+        Arrays.parallelPrefix(y, partialSum);
+        double sum = y[count]; // this index exists!
+        // drop last value which must be 1.0
+        return Arrays.stream(y).limit(count).boxed().map(z -> z / sum).collect(Collectors.toList());
+    }
 
 }

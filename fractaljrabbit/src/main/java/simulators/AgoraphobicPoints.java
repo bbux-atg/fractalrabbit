@@ -84,8 +84,7 @@ public class AgoraphobicPoints {
                 /*
                  * Adding this edge also adds the new node to the tree.
                  */
-                this.rootedTree.putEdgeValue(this.points.get(0), this.points.get(i),
-                        Math.sqrt(p.sumSquares(this.points.get(i))));
+                this.rootedTree.putEdgeValue(this.points.get(0), this.points.get(i), Math.sqrt(p.sumSquares(this.points.get(i))));
             }
             /*
              * In the case of failure, we select the parent of the new point, and generate a
@@ -117,8 +116,8 @@ public class AgoraphobicPoints {
                         /*
                          * This candidate has just become the point with index i.
                          */
-                        this.rootedTree.putEdgeValue(this.points.get(parent), this.points.get(i),
-                                SpacePointGenerator.distance(this.points.get(parent), this.points.get(i)));
+                      double distance = SpacePointGenerator.distance(this.points.get(parent), this.points.get(i));
+                      this.rootedTree.putEdgeValue(this.points.get(parent), this.points.get(i), distance);
                     }
                 }
 
@@ -141,11 +140,12 @@ public class AgoraphobicPoints {
     public MutableValueGraph<double[], Double> getRootedTree() {
         return rootedTree;
     }
+
     /**
      * @return - what proportion of the samples taken produced a new point?
      */
     public double getSamplingEfficiency() {
-        return (double)this.nPoints/(double)this.totalSamples;
+        return (double) this.nPoints / (double) this.totalSamples;
     }
 
 }

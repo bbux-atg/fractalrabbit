@@ -12,8 +12,8 @@ package utilities;
  * - graph vertices, where distance is path length
  */
 public interface Metrizable {
-	double distanceTo(Metrizable o);
-	boolean equals(Metrizable o);
-	
+    double distanceTo(Metrizable o);
+
+    boolean equals(Metrizable o);
 
 }
